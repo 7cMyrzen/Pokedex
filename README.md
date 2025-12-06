@@ -1,36 +1,117 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Un Pokédex moderne développé avec Next.js, TypeScript et Tailwind CSS, offrant une expérience utilisateur fluide pour explorer les Pokémon de la première génération.
 
-## Getting Started
+## Fonctionnalités
 
-First, run the development server:
+- 🎨 **Interface moderne et réactive**
+- 🔍 **Recherche avancée** par nom numéro
+- 🌍 **Support multilingue** (français, anglais, etc.)
+- 📱 **Design responsive** pour tous les appareils
+- ⚡ **Performances optimisées** avec Next.js
+- 🎭 **Thème sombre/clair** (selon les préférences système)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Prérequis
+
+- Node.js 18 ou supérieur
+- npm ou yarn
+- Un navigateur web moderne
+
+## Installation
+
+1. **Cloner le dépôt**
+
+   ```
+
+   git clone https://github.com/7cMyrzen/Pokedex.git
+
+   cd Pokedex
+
+   ```
+2. **Installer les dépendances**
+
+   ```
+
+   npm install
+
+   ```
+
+   ou
+
+   ```
+
+   yarn install
+
+   ```
+3. **Configuration de l'environnement**
+
+   Créez un fichier `.env.local` à la racine du projet avec les variables suivantes :
+
+   ```
+
+   NEXT_PUBLIC_POKEMONS_API = https://pokedex-jgabriele.vercel.app/pokemons.json
+
+   NEXT_PUBLIC_TYPES_API = https://pokedex-jgabriele.vercel.app/types.json 
+
+   ```
+4. **Démarrer le serveur de développement**
+
+   ```
+
+   npm run dev
+
+   ```
+
+   ou
+
+   ```
+
+   yarn dev
+
+   ```
+5. **Ouvrez votre navigateur** à l'adresse [http://localhost:3000](http://localhost:3000)
+
+## Structure du projet
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+src/
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+├── app/                    # Pages de l'application
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+│   ├── gen1/               # Page de la première génération
 
-## Learn More
+│   ├── other/              # Page PokéAPI complète (en développement)
 
-To learn more about Next.js, take a look at the following resources:
+│   └── not-found.tsx       # Page 404 personnalisée
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+├── components/             # Composants réutilisables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+│   ├── Home/               # Composants de la page d'accueil
 
-## Deploy on Vercel
+│   ├── Layout/             # Composants de mise en page
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+│   └── ui/                 # Composants d'interface utilisateur
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+├── hooks/                  # Hooks personnalisés
+
+├── lib/                    # Utilitaires et configurations
+
+└── public/                 # Fichiers statiques
+
+```
+
+## Technologies utilisées
+
+- **Framework** : Next.js 16 avec App Router
+- **Langage** : TypeScript
+- **Styling** : Tailwind CSS
+- **Animations** : GSAP
+
+## Déploiement
+
+Le projet peut être déployé sur Vercel, Netlify ou tout autre hébergeur supportant Next.js.
+
+[![Déployer avec Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2F7cMyrzen%2FPokedex)
+
+## Auteur
+
+👤 **7cMyrzen** - [@7cMyrzen](https://github.com/7cMyrzen)
