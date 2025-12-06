@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 /* Components */
 import SmoothScrollWrapper from "@/components/SmoothScrollWrapper";
@@ -49,6 +50,7 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
           <SmoothScrollWrapper>
             <main className="w-full flex justify-center pt-24">
               {children}
+              <Analytics />
             </main>
 
             <footer className="mt-40">
