@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { getAllPokemonList } from "@/lib/pokeapi";
+import { matchesSearch } from "@/lib/search";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/hooks/useLanguage";
 
@@ -42,7 +43,7 @@ export function PokemonSelector({ onSelect, label, className }: PokemonSelectorP
         const term = searchTerm.toLowerCase();
         // Simple limit to 10 results for performance
         const results = allPokemons
-            .filter(p => p.name.includes(term) || String(p.id).includes(term))
+            .filter(p => matchesSearch(p.id, term, p.name))
             .slice(0, 10);
         setFiltered(results);
     }, [searchTerm, allPokemons]);

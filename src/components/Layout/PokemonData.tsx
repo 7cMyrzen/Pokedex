@@ -112,7 +112,7 @@ export function PokemonData({ pokemon, lang, typesMap, className, backHref }: Po
                                 whileHover={{ scale: 1.1, filter: "brightness(1.1)" }}
                                 whileTap={{ scale: 0.95 }}
                             >
-                                {t}
+                                {typesMap?.[t]?.translations?.[lang] || typesMap?.[t]?.translations?.["en"] || t}
                             </motion.span>
                         ))}
                     </motion.div>

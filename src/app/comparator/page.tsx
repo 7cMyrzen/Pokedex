@@ -1,17 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PokemonSelector } from "@/components/Comparator/PokemonSelector";
 import { RadarChart } from "@/components/Comparator/RadarChart";
 import { getPokemonDetails } from "@/lib/pokeapi";
-import type { Pokemon } from "@/lib/api";
+import { type Pokemon, type TypesMap, getTypes } from "@/lib/api";
 import Image from "next/image";
+import { useLanguage } from "@/hooks/useLanguage";
+import { cn } from "@/lib/utils"; // Importing cn for potential styling needs
 
 export default function ComparatorPage() {
+    const language = useLanguage();
     const [pokemon1, setPokemon1] = useState<Pokemon | null>(null);
     const [pokemon2, setPokemon2] = useState<Pokemon | null>(null);
     const [loading1, setLoading1] = useState(false);
     const [loading2, setLoading2] = useState(false);
+    const [typesMap, setTypesMap] = useState<TypesMap>({});
+
+    useEffect(() => {
+        getTypes().then(setTypesMap).catch(console.error);
+    }, []);
 
     const handleSelect1 = async (id: number) => {
         setLoading1(true);
@@ -64,10 +72,16 @@ export default function ComparatorPage() {
                                     className="object-contain drop-shadow-md"
                                 />
                             </div>
-                            <h2 className="text-2xl font-bold capitalize">{pokemon1.names["en"]}</h2>
+                            <h2 className="text-2xl font-bold capitalize">{pokemon1.names[language] || pokemon1.names["en"]}</h2>
                             <div className="flex justify-center gap-2 mt-2">
                                 {pokemon1.types.map(t => (
-                                    <span key={t} className="px-3 py-1 bg-muted rounded-full text-xs font-medium">{t}</span>
+                                    <span
+                                        key={t}
+                                        className="px-3 py-1 bg-muted rounded-full text-xs font-medium text-white shadow-sm"
+                                        style={typesMap[t]?.backgroundColor ? { backgroundColor: typesMap[t].backgroundColor } : undefined}
+                                    >
+                                        {typesMap[t]?.translations?.[language] || typesMap[t]?.translations?.["en"] || t}
+                                    </span>
                                 ))}
                             </div>
                         </div>
@@ -81,7 +95,7 @@ export default function ComparatorPage() {
                 {/* Center Chart */}
                 <div className="flex flex-col items-center justify-center min-h-[400px] p-2 sm:p-6 rounded-3xl border border-border/40 bg-white/50 dark:bg-black/20 backdrop-blur-md shadow-sm order-last lg:order-none lg:mt-12">
                     {pokemon1 ? (
-                        <RadarChart pokemon1={pokemon1} pokemon2={pokemon2} />
+                        <RadarChart pokemon1={pokemon1} pokemon2={pokemon2} lang={language} />
                     ) : (
                         <div className="text-center text-muted-foreground">
                             <p>Veuillez sélectionner au moins un premier Pokémon pour voir le graphique.</p>
@@ -104,10 +118,16 @@ export default function ComparatorPage() {
                                     className="object-contain drop-shadow-md"
                                 />
                             </div>
-                            <h2 className="text-2xl font-bold capitalize">{pokemon2.names["en"]}</h2>
+                            <h2 className="text-2xl font-bold capitalize">{pokemon2.names[language] || pokemon2.names["en"]}</h2>
                             <div className="flex justify-center gap-2 mt-2">
                                 {pokemon2.types.map(t => (
-                                    <span key={t} className="px-3 py-1 bg-muted rounded-full text-xs font-medium">{t}</span>
+                                    <span
+                                        key={t}
+                                        className="px-3 py-1 bg-muted rounded-full text-xs font-medium text-white shadow-sm"
+                                        style={typesMap[t]?.backgroundColor ? { backgroundColor: typesMap[t].backgroundColor } : undefined}
+                                    >
+                                        {typesMap[t]?.translations?.[language] || typesMap[t]?.translations?.["en"] || t}
+                                    </span>
                                 ))}
                             </div>
                         </div>

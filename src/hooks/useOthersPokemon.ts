@@ -7,6 +7,7 @@ import {
     getPokemonDetails,
     getPokemonByType
 } from "@/lib/pokeapi";
+import { matchesSearch } from "@/lib/search";
 
 export const OTHERS_STATE_KEY = "others_search_state";
 const ITEMS_PER_PAGE = 100;
@@ -85,7 +86,8 @@ export function useOthersPokemon(lang: string) {
             if (q) {
                 filteredList = filteredList.filter(p => {
                     const idFromUrl = p.url.split("/").filter(Boolean).pop();
-                    return idFromUrl === q || p.name.includes(q);
+                    const id = idFromUrl ? parseInt(idFromUrl) : 0;
+                    return matchesSearch(id, q, p.name);
                 });
             }
 

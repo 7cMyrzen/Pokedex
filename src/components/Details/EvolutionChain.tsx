@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MoveRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/hooks/useLanguage";
 
 interface EvolutionChainProps {
     url: string;
@@ -22,6 +23,7 @@ interface EvolutionData {
 }
 
 export function EvolutionChain({ url }: EvolutionChainProps) {
+    const language = useLanguage();
     const [chainPokemons, setChainPokemons] = useState<Pokemon[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -98,7 +100,7 @@ export function EvolutionChain({ url }: EvolutionChainProps) {
                                     />
                                 </div>
                                 <span className="text-sm font-medium text-foreground/80 group-hover:text-primary transition-colors capitalize">
-                                    {p.names["en"] || p.names["fr"]}
+                                    {p.names[language] || p.names["en"] || p.names["fr"]}
                                 </span>
                             </motion.div>
                         </Link>
