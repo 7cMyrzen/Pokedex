@@ -111,7 +111,8 @@ export default function OthersPage() {
             {/* Disclaimer */}
             <div className="mb-6 p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-sm text-blue-600 dark:text-blue-400">
                 <p>
-                    <strong>Note :</strong> La recherche fonctionne actuellement avec les noms anglais ou les numéros, car les données proviennent de la base mondiale PokéAPI. Les noms français sont chargés à l'affichage.
+                    <strong>Note :</strong> La recherche supporte désormais plusieurs langues (Français, Anglais, Allemand, Japonais, etc.) ! 🌍
+                    Vous pouvez chercher un Pokémon par son nom dans n'importe quelle langue ou par son numéro.
                 </p>
             </div>
 

@@ -149,6 +149,19 @@ export function useOthersPokemon(lang: string) {
         }
     }, [loading, displayedPokemons]);
 
+    // Auto-save filters to sessionStorage on change
+    useEffect(() => {
+        if (typeof window !== "undefined" && !loading) {
+            const state = {
+                query,
+                activeTypes,
+                currentPage,
+                scrollY: window.scrollY || window.pageYOffset || 0,
+            };
+            window.sessionStorage.setItem(OTHERS_STATE_KEY, JSON.stringify(state));
+        }
+    }, [query, activeTypes, currentPage, loading]);
+
     return {
         loading,
         error,

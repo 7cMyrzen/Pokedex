@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -7,6 +8,7 @@ import { motion } from "framer-motion";
 import type { Pokemon, TypesMap } from "@/lib/api";
 import { FavoriteButton } from "../Favorites/FavoriteButton";
 import { EvolutionChain } from "../Details/EvolutionChain";
+import { MoveBadge } from "../Details/MoveBadge";
 
 interface PokemonDataProps {
     pokemon: Pokemon;
@@ -18,6 +20,7 @@ interface PokemonDataProps {
 
 export function PokemonData({ pokemon, lang, typesMap, className, backHref }: PokemonDataProps) {
     const displayName = pokemon.names?.[lang] || pokemon.names?.["en"] || String(pokemon.id);
+    const [showAllMoves, setShowAllMoves] = useState(false);
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -31,6 +34,8 @@ export function PokemonData({ pokemon, lang, typesMap, className, backHref }: Po
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0 }
     };
+
+    const visibleMoves = showAllMoves ? pokemon.moves : pokemon.moves.slice(0, 30);
 
     return (
         <section
@@ -141,14 +146,25 @@ export function PokemonData({ pokemon, lang, typesMap, className, backHref }: Po
                     <motion.div variants={itemVariants} className="mt-6">
                         <h2 className="text-sm font-semibold text-foreground/90">Liste des mouvements</h2>
                         <div className="mt-3 flex flex-wrap gap-2">
-                            {pokemon.moves.map((m) => (
-                                <span
-                                    key={m}
-                                    className="inline-flex items-center rounded-full px-3 py-1 text-[11px] sm:text-xs font-medium border border-border/30 bg-background/50 text-foreground/90"
-                                >
-                                    {m}
-                                </span>
+                            {visibleMoves.map((m) => (
+                                <MoveBadge key={m} move={m} />
                             ))}
+                            {!showAllMoves && pokemon.moves.length > 30 && (
+                                <button
+                                    onClick={() => setShowAllMoves(true)}
+                                    className="text-xs text-primary font-medium hover:underline self-center ml-2"
+                                >
+                                    +{pokemon.moves.length - 30} autres
+                                </button>
+                            )}
+                            {showAllMoves && pokemon.moves.length > 30 && (
+                                <button
+                                    onClick={() => setShowAllMoves(false)}
+                                    className="text-xs text-primary font-medium hover:underline self-center ml-2"
+                                >
+                                    Voir moins
+                                </button>
+                            )}
                         </div>
                     </motion.div>
 
