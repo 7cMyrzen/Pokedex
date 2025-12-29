@@ -1,27 +1,32 @@
 # 🦅 Pokédex Moderne
 
-Une application Pokédex haute performance développée avec **Next.js 16**, **TypeScript** et **Tailwind CSS**. 
+Une application Pokédex haute performance développée avec **Next.js 16**, **TypeScript**, **Tailwind CSS** et **Framer Motion**.
 Ce projet offre une interface fluide et réactive pour explorer à la fois les Pokémon de la **Première Génération** (via API statique) et l'ensemble du **Pokédex National** (via PokéAPI).
 
 ![Status](https://img.shields.io/badge/Status-Stable-success) ![License](https://img.shields.io/badge/License-MIT-blue)
 
 ## ✨ Fonctionnalités Clés
 
-- 🎨 **UX/UI Moderne** : Interface soignée, animations GSAP et design responsive.
+- 🎨 **UX/UI Moderne** : Interface soignée, animations **Framer Motion** (Hero Transitions, Stagger Effects) et design responsive.
 - ⚡ **Performance** : Architecture optimisée avec Next.js App Router (SSR/CSR).
 - 🔍 **Double Mode de Recherche** :
   - **Gen 1** : Recherche instantanée et filtrage par type sur un jeu de données statique optimisé.
   - **Global (API)** : Exploration paginée de tous les Pokémon avec recherche et filtres dynamiques.
+- ❤️ **Mon Équipe (Favoris)** : Système de favoris persistant (LocalStorage) pour constituer votre équipe de rêve.
+- ⚖️ **Comparateur de Stats** : Outil interactif avec graphique Radar pour comparer les performances de deux Pokémon.
+- 🧬 **Chaîne d'Évolution** : Visualisation complète et navigable des évolutions.
 - 🌍 **Internationalisation** : Support multi-langue avec persistance des préférences.
 - 💾 **Persistance d'État** : Sauvegarde intelligente de la position de scroll et des filtres lors de la navigation.
-- 🏗️ **Architecture Clean** : Logique métier encapsulée dans des Custom Hooks (`useGen1Pokemon`, `useOthersPokemon`) pour une maintenabilité maximale.
+- 🏗️ **Architecture Clean** : Logique métier encapsulée dans des Custom Hooks pour une maintenabilité maximale.
 
 ## 🛠️ Stack Technique
 
 - **Framework** : Next.js 16 (App Router)
 - **Langage** : TypeScript (Strict Mode)
 - **Styles** : Tailwind CSS
-- **Animations** : GSAP
+- **Animations** : Framer Motion, GSAP
+- **Graphiques** : Recharts
+- **Icônes** : Lucide React
 - **API** : PokéAPI v2 & API Statique Personnalisée
 
 ## 🚀 Installation
@@ -69,16 +74,22 @@ src/
 ├── app/                  # Routes et Pages (App Router)
 │   ├── gen1/             # Module Génération 1
 │   ├── others/           # Module Pokédex Global (PokéAPI)
+│   ├── favorites/        # Module Favoris (Mon Équipe)
+│   ├── comparator/       # Module Comparateur
 │   └── layout.tsx        # Layout racine
 ├── components/           # Bibliothèque de composants UI
 │   ├── Layout/           # Cartes, Grid, Modales...
-│   └── ui/               # Pagination, Boutons...
+│   ├── Comparator/       # Composants spécifiques au comparateur
+│   ├── Details/          # Composants détails (Evolution...)
+│   ├── Favorites/        # Composants favoris (Bouton...)
+│   └── ui/               # Ui kits
+├── context/              # Contextes React (FavoritesContext...)
 ├── hooks/                # Logique métier (Custom Hooks)
 │   ├── useGen1Pokemon.ts # Logique Gen 1 + Filtres
 │   ├── useOthersPokemon.ts # Logique API + Pagination
 │   └── useLanguage.ts    # Gestion globale de la langue
 ├── lib/                  # Utilitaires et Clients API
-│   ├── api.ts            # Client API Statique
+│   ├── api.ts            # Client API Statique + Types
 │   └── pokeapi.ts        # Client PokéAPI
 └── public/               # Assets statiques
 ```
