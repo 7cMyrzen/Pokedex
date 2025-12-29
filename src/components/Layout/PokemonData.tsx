@@ -10,9 +10,10 @@ interface PokemonDataProps {
     lang: string;
     typesMap?: TypesMap;
     className?: string;
+    backHref?: string;
 }
 
-export function PokemonData({ pokemon, lang, typesMap, className }: PokemonDataProps) {
+export function PokemonData({ pokemon, lang, typesMap, className, backHref }: PokemonDataProps) {
     const displayName = pokemon.names?.[lang] || pokemon.names?.["en"] || String(pokemon.id);
 
     return (
@@ -26,7 +27,7 @@ export function PokemonData({ pokemon, lang, typesMap, className }: PokemonDataP
 
             <div className="mb-4 sm:mb-6">
                 <Link
-                    href="/gen1"
+                    href={backHref || "/gen1"}
                     className={cn(
                         "inline-flex items-center gap-2 rounded-full px-3 py-1.5",
                         "border border-border/30 bg-background/50 text-sm text-foreground/80",

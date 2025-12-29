@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import { PokemonData } from "@/components/Layout/PokemonData";
-import { getPokemons, getTypes, type TypesMap, type Pokemon } from "@/lib/api";
+import { getPokemonDetails } from "@/lib/pokeapi";
+import { getTypes, type TypesMap, type Pokemon } from "@/lib/api";
 import { useLanguage } from "@/hooks/useLanguage";
 
 export default function PokemonDetailsPage() {
@@ -11,33 +12,39 @@ export default function PokemonDetailsPage() {
     const id = useMemo(() => Number(params?.id), [params]);
 
     const lang = useLanguage();
-    const [pokemons, setPokemons] = useState<Pokemon[] | null>(null);
+    const [pokemon, setPokemon] = useState<Pokemon | null>(null);
     const [typesMap, setTypesMap] = useState<TypesMap | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Fetch All Gen1 Pokemons (optimization: could fetch single if API supported it)
+    // Fetch Pokemon Details
     useEffect(() => {
         if (!id || Number.isNaN(id)) return;
         let cancelled = false;
         setLoading(true);
         setError(null);
 
-        getPokemons(lang)
+        getPokemonDetails(id)
             .then((data) => {
-                if (!cancelled) setPokemons(data);
+                if (!cancelled) {
+                    setPokemon(data);
+                    setLoading(false);
+                }
             })
-            .catch(() => {
-                if (!cancelled) setError("Impossible de charger le pokémon.");
-            })
-            .finally(() => {
-                if (!cancelled) setLoading(false);
+            .catch((e) => {
+                if (!cancelled) {
+                    console.error(e);
+                    setError("Impossible de charger le pokémon.");
+                    setLoading(false);
+                }
             });
 
-        return () => { cancelled = true; };
-    }, [lang, id]);
+        return () => {
+            cancelled = true;
+        };
+    }, [id]);
 
-    // Fetch Types
+    // Fetch Types (for UI colors/translations)
     useEffect(() => {
         let cancelled = false;
         setTypesMap(null);
@@ -46,13 +53,10 @@ export default function PokemonDetailsPage() {
                 if (!cancelled) setTypesMap(map);
             })
             .catch(() => { });
-        return () => { cancelled = true; };
+        return () => {
+            cancelled = true;
+        };
     }, [lang]);
-
-    const selected = useMemo(() => {
-        if (!pokemons) return null;
-        return pokemons.find((p) => p.id === id) || null;
-    }, [pokemons, id]);
 
     return (
         <main className="max-w-screen-2xl mx-auto px-2 sm:px-4 lg:px-6 py-12">
@@ -60,7 +64,7 @@ export default function PokemonDetailsPage() {
                 <p className="mb-4 text-sm text-red-500">{error}</p>
             )}
 
-            {loading || !selected ? (
+            {loading || !pokemon ? (
                 <div className="rounded-3xl border border-border/30 bg-background/60 shadow-sm overflow-hidden p-6">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
                         <div className="aspect-square w-full bg-muted/40 animate-pulse rounded-2xl" />
@@ -85,7 +89,12 @@ export default function PokemonDetailsPage() {
                     </div>
                 </div>
             ) : (
-                <PokemonData pokemon={selected} lang={lang} typesMap={typesMap ?? undefined} />
+                <PokemonData
+                    pokemon={pokemon}
+                    lang={lang}
+                    typesMap={typesMap ?? undefined}
+                    backHref="/others"
+                />
             )}
         </main>
     );
