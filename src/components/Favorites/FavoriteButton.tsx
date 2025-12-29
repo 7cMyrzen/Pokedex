@@ -3,6 +3,7 @@
 import { useFavorites } from "@/context/FavoritesContext";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface FavoriteButtonProps {
     id: number;
@@ -11,6 +12,7 @@ interface FavoriteButtonProps {
 
 export function FavoriteButton({ id, className }: FavoriteButtonProps) {
     const { isFavorite, toggleFavorite } = useFavorites();
+    const t = useTranslation();
     const active = isFavorite(id);
 
     return (
@@ -28,7 +30,7 @@ export function FavoriteButton({ id, className }: FavoriteButtonProps) {
                 "backdrop-blur-sm border border-border/10",
                 className
             )}
-            aria-label={active ? "Retirer des favoris" : "Ajouter aux favoris"}
+            aria-label={active ? t.favorites.remove : t.favorites.add}
         >
             <svg
                 width="20"

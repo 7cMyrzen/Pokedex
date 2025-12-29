@@ -5,10 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslation } from "@/hooks/useTranslation";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function Details() {
+    const t = useTranslation();
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -48,24 +50,24 @@ export function Details() {
                     </div>
                     <div className="flex-1">
                         <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                            1ère Génération
+                            {t.home.details.gen1.title}
                         </h2>
                         <div className="space-y-4 text-muted-foreground">
                             <p>
-                                Explorez les 151 Pokémon emblématiques de la première génération dans une interface moderne et intuitive.
+                                {t.home.details.gen1.p1}
                             </p>
                             <p>
-                                Notre application utilise une API spécialisée qui fournit des données essentielles sur chaque Pokémon, y compris leurs types, statistiques de base, et plus encore.
+                                {t.home.details.gen1.p2}
                             </p>
                             <p>
-                                Parfait pour les dresseurs qui souhaitent retrouver rapidement les informations de base sur leurs Pokémon préférés de la première heure.
+                                {t.home.details.gen1.p3}
                             </p>
                         </div>
                         <Link
                             href="/gen1"
                             className="inline-block mt-6 px-6 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
                         >
-                            Découvrir
+                            {t.home.details.gen1.cta}
                         </Link>
                     </div>
                 </div>
@@ -86,24 +88,24 @@ export function Details() {
                     </div>
                     <div className="flex-1">
                         <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                            PokéAPI Complète
+                            {t.home.details.api.title}
                         </h2>
                         <div className="space-y-4 text-muted-foreground">
                             <p>
-                                Accédez à une base de données complète de tous les Pokémon à travers les générations, avec des informations détaillées sur chaque créature.
+                                {t.home.details.api.p1}
                             </p>
                             <p>
-                                Grâce à l'API PokéAPI, bénéficiez de données exhaustives incluant les capacités, les évolutions, les faiblesses et bien plus encore.
+                                {t.home.details.api.p2}
                             </p>
                             <p>
-                                Cette section est actuellement en développement actif et proposera bientôt des fonctionnalités avancées pour les dresseurs les plus exigeants.
+                                {t.home.details.api.p3}
                             </p>
                         </div>
                         <Link
                             href="/others"
                             className="inline-block mt-6 px-6 py-2 border border-border rounded-md hover:bg-accent/50 transition-colors"
                         >
-                            Voir plus
+                            {t.home.details.api.cta}
                         </Link>
                     </div>
                 </div>

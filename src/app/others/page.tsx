@@ -2,6 +2,7 @@
 
 import { useOthersPokemon, OTHERS_STATE_KEY } from "@/hooks/useOthersPokemon";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useTranslation } from "@/hooks/useTranslation";
 import { PokemonGrid } from "@/components/Layout/PokemonGrid";
 import { PokemonCard } from "@/components/Layout/PokemonCard";
 import { EmptyResults } from "@/components/Layout/EmptyResults";
@@ -11,6 +12,7 @@ import { useState, useRef } from "react";
 
 export default function OthersPage() {
     const lang = useLanguage();
+    const t = useTranslation();
     const {
         loading,
         error,
@@ -38,9 +40,8 @@ export default function OthersPage() {
         setQuery(val);
         setCurrentPage(0);
     };
-
-    const handleTypeToggle = (t: string) => {
-        setActiveTypes(prev => prev.includes(t) ? prev.filter(x => x !== t) : [...prev, t]);
+    const handleTypeToggle = (type: string) => {
+        setActiveTypes(prev => prev.includes(type) ? prev.filter(x => x !== type) : [...prev, type]);
         setCurrentPage(0);
     };
 
@@ -48,13 +49,13 @@ export default function OthersPage() {
         <main className="max-w-screen-2xl mx-auto px-2 sm:px-4 lg:px-6 py-12">
             {/* Search Input */}
             <div className="mb-6 flex items-center">
-                <label htmlFor="others-search" className="sr-only">Rechercher</label>
+                <label htmlFor="others-search" className="sr-only">{t.common.search}</label>
                 <input
                     id="others-search"
                     type="search"
                     value={query}
                     onChange={(e) => handleSearch(e.target.value)}
-                    placeholder="Rechercher par nom (anglais) ou ID..."
+                    placeholder={t.search.placeholderOthers}
                     className="w-full rounded-2xl border border-border/30 bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 shadow-sm"
                 />
             </div>
@@ -68,26 +69,26 @@ export default function OthersPage() {
                             onClick={() => setTypesOpen(true)}
                             className="inline-flex items-center gap-2 rounded-2xl border border-border/30 bg-background/60 px-4 py-2 text-sm text-foreground shadow-sm hover:bg-background/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                         >
-                            Filtrer par types {activeTypes.length > 0 && `(${activeTypes.length})`}
+                            {t.common.filter} {activeTypes.length > 0 && `(${activeTypes.length})`}
                             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
                         </button>
-                        <Modal open={typesOpen} onClose={() => setTypesOpen(false)} title="Filtrer par types" contentClassName="max-h-[85vh] sm:max-h-[75vh]">
+                        <Modal open={typesOpen} onClose={() => setTypesOpen(false)} title={t.common.filters} contentClassName="max-h-[85vh] sm:max-h-[75vh]">
                             <div className="p-1">
-                                {Object.keys(typesMap).map((t) => {
-                                    const label = typesMap[t]?.translations?.[lang] || typesMap[t]?.translations?.["en"] || t;
-                                    const checked = activeTypes.includes(t);
+                                {Object.keys(typesMap).map((typeKey) => { // Renamed t to typeKey to avoid conflict with translation t
+                                    const label = typesMap[typeKey]?.translations?.[lang] || typesMap[typeKey]?.translations?.["en"] || typeKey;
+                                    const checked = activeTypes.includes(typeKey);
                                     return (
-                                        <label key={t} className="flex items-center gap-3 rounded-xl px-2 py-2 hover:bg-muted/30 cursor-pointer">
+                                        <label key={typeKey} className="flex items-center gap-3 rounded-xl px-2 py-2 hover:bg-muted/30 cursor-pointer">
                                             <input
                                                 type="checkbox"
                                                 checked={checked}
-                                                onChange={() => handleTypeToggle(t)}
+                                                onChange={() => handleTypeToggle(typeKey)}
                                                 className="h-4 w-4 rounded border-border/40 bg-background"
                                             />
                                             <span className="inline-flex items-center gap-2 text-sm text-foreground/90">
                                                 <span
                                                     className="inline-block h-3 w-3 rounded-full border border-border/30"
-                                                    style={typesMap[t]?.backgroundColor ? { backgroundColor: typesMap[t]!.backgroundColor } : undefined}
+                                                    style={typesMap[typeKey]?.backgroundColor ? { backgroundColor: typesMap[typeKey]!.backgroundColor } : undefined}
                                                 />
                                                 {label}
                                             </span>
@@ -103,7 +104,7 @@ export default function OthersPage() {
                         disabled={activeTypes.length === 0}
                         className="inline-flex items-center gap-2 rounded-2xl border border-border/30 bg-background/60 px-4 py-2 text-sm text-foreground shadow-sm hover:bg-background/70 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                     >
-                        Supprimer les filtres
+                        {t.common.clearFilters}
                     </button>
                 </div>
             )}
@@ -111,8 +112,7 @@ export default function OthersPage() {
             {/* Disclaimer */}
             <div className="mb-6 p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-sm text-blue-600 dark:text-blue-400">
                 <p>
-                    <strong>Note :</strong> La recherche supporte désormais plusieurs langues (Français, Anglais, Allemand, Japonais, etc.) ! 🌍
-                    Vous pouvez chercher un Pokémon par son nom dans n'importe quelle langue ou par son numéro.
+                    <strong>Note :</strong> {t.search.disclaimerOthers}
                 </p>
             </div>
 

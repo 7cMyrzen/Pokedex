@@ -3,9 +3,15 @@
 import { ResponsiveContainer, RadarChart as RechartsRadar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, Tooltip } from 'recharts';
 import type { Pokemon } from "@/lib/api";
 
+/**
+ * Props for the RadarChart component.
+ */
 interface RadarChartProps {
+    /** Primary Pokemon to display */
     pokemon1: Pokemon;
+    /** Optional secondary Pokemon for comparison */
     pokemon2?: Pokemon | null;
+    /** Current language code for localizing labels */
     lang: string;
 }
 
@@ -18,6 +24,11 @@ const STATS_TRANSLATIONS: Record<string, Record<string, string>> = {
     speed: { en: "Speed", fr: "Vitesse" }
 };
 
+/**
+ * Visualizes Pokemon statistics using a Spider/Radar chart.
+ * Supports comparing two Pokemon side-by-side.
+ * Uses Recharts for rendering.
+ */
 export function RadarChart({ pokemon1, pokemon2, lang }: RadarChartProps) {
     const t = (key: string) => STATS_TRANSLATIONS[key]?.[lang] || STATS_TRANSLATIONS[key]?.["en"] || key;
 

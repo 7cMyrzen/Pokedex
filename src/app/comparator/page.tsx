@@ -7,10 +7,12 @@ import { getPokemonDetails } from "@/lib/pokeapi";
 import { type Pokemon, type TypesMap, getTypes } from "@/lib/api";
 import Image from "next/image";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useTranslation } from "@/hooks/useTranslation";
 import { cn } from "@/lib/utils"; // Importing cn for potential styling needs
 
 export default function ComparatorPage() {
     const language = useLanguage();
+    const t = useTranslation();
     const [pokemon1, setPokemon1] = useState<Pokemon | null>(null);
     const [pokemon2, setPokemon2] = useState<Pokemon | null>(null);
     const [loading1, setLoading1] = useState(false);
@@ -49,19 +51,19 @@ export default function ComparatorPage() {
         <main className="max-w-screen-xl mx-auto px-4 py-8">
             <header className="mb-12 text-center">
                 <h1 className="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 mb-4">
-                    Comparateur de Stats
+                    {t.comparator.title}
                 </h1>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                    Sélectionnez deux Pokémon pour comparer leurs statistiques de base sur le graphique radar.
+                    {t.comparator.subtitle}
                 </p>
             </header>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start mb-12">
                 {/* Left Selector */}
                 <div className="flex flex-col gap-6 p-6 rounded-3xl border border-border/40 bg-background/40 backdrop-blur-sm">
-                    <PokemonSelector onSelect={handleSelect1} label="Pokémon 1 (Rouge)" />
+                    <PokemonSelector onSelect={handleSelect1} label={t.comparator.selectPokemon} />
                     {loading1 ? (
-                        <div className="aspect-square w-full flex items-center justify-center bg-muted/20 rounded-2xl animate-pulse">Chargement...</div>
+                        <div className="aspect-square w-full flex items-center justify-center bg-muted/20 rounded-2xl animate-pulse">{t.common.loading}</div>
                     ) : pokemon1 ? (
                         <div className="text-center">
                             <div className="relative aspect-square w-full max-w-[200px] mx-auto mb-4">
@@ -87,7 +89,7 @@ export default function ComparatorPage() {
                         </div>
                     ) : (
                         <div className="aspect-square w-full flex items-center justify-center bg-muted/10 rounded-2xl border-2 border-dashed border-border/30 text-muted-foreground text-sm">
-                            Sélectionnez un Pokémon
+                            {t.comparator.selectPokemon}
                         </div>
                     )}
                 </div>
@@ -98,16 +100,16 @@ export default function ComparatorPage() {
                         <RadarChart pokemon1={pokemon1} pokemon2={pokemon2} lang={language} />
                     ) : (
                         <div className="text-center text-muted-foreground">
-                            <p>Veuillez sélectionner au moins un premier Pokémon pour voir le graphique.</p>
+                            <p>{t.comparator.selectPokemon}</p>
                         </div>
                     )}
                 </div>
 
                 {/* Right Selector */}
                 <div className="flex flex-col gap-6 p-6 rounded-3xl border border-border/40 bg-background/40 backdrop-blur-sm">
-                    <PokemonSelector onSelect={handleSelect2} label="Pokémon 2 (Bleu)" />
+                    <PokemonSelector onSelect={handleSelect2} label={t.comparator.selectPokemon} />
                     {loading2 ? (
-                        <div className="aspect-square w-full flex items-center justify-center bg-muted/20 rounded-2xl animate-pulse">Chargement...</div>
+                        <div className="aspect-square w-full flex items-center justify-center bg-muted/20 rounded-2xl animate-pulse">{t.common.loading}</div>
                     ) : pokemon2 ? (
                         <div className="text-center">
                             <div className="relative aspect-square w-full max-w-[200px] mx-auto mb-4">
@@ -133,7 +135,7 @@ export default function ComparatorPage() {
                         </div>
                     ) : (
                         <div className="aspect-square w-full flex items-center justify-center bg-muted/10 rounded-2xl border-2 border-dashed border-border/30 text-muted-foreground text-sm">
-                            Sélectionnez un Pokémon
+                            {t.comparator.selectPokemon}
                         </div>
                     )}
                 </div>

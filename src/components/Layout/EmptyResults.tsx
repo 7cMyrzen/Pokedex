@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface EmptyResultsProps {
     query?: string;
@@ -9,6 +10,8 @@ interface EmptyResultsProps {
 }
 
 export function EmptyResults({ query, className }: EmptyResultsProps) {
+    const t = useTranslation();
+
     return (
         <div
             className={cn(
@@ -29,12 +32,12 @@ export function EmptyResults({ query, className }: EmptyResultsProps) {
                     />
                 </div>
             </div>
-            <h3 className="text-lg font-semibold text-foreground">Aucun résultat</h3>
+            <h3 className="text-lg font-semibold text-foreground">{t.search.noResultsTitle}</h3>
             <p className="mt-1 text-sm text-muted-foreground">
                 {query ? (
-                    <>Aucun Pokémon ne correspond à « {query} ».</>
+                    <>{t.search.noResultsQuery} « {query} ».</>
                 ) : (
-                    <>Aucun Pokémon à afficher.</>
+                    <>{t.search.noResultsGeneric}</>
                 )}
             </p>
         </div>

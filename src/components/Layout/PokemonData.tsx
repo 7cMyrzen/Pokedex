@@ -9,18 +9,32 @@ import type { Pokemon, TypesMap } from "@/lib/api";
 import { FavoriteButton } from "../Favorites/FavoriteButton";
 import { EvolutionChain } from "../Details/EvolutionChain";
 import { MoveBadge } from "../Details/MoveBadge";
+import { useTranslation } from "@/hooks/useTranslation";
 
+/**
+ * Props for the PokemonData component.
+ */
 interface PokemonDataProps {
+    /** The Pokemon object containing details to display */
     pokemon: Pokemon;
+    /** Current language code */
     lang: string;
+    /** Map of type definitions for styling and translation */
     typesMap?: TypesMap;
+    /** Optional additional CSS classes */
     className?: string;
+    /** Optional navigation link for the back button (default: /gen1) */
     backHref?: string;
 }
 
+/**
+ * Displays detailed information about a Pokemon.
+ * Includes image, stats, type badges, moves list, and evolution chain.
+ */
 export function PokemonData({ pokemon, lang, typesMap, className, backHref }: PokemonDataProps) {
     const displayName = pokemon.names?.[lang] || pokemon.names?.["en"] || String(pokemon.id);
     const [showAllMoves, setShowAllMoves] = useState(false);
+    const t = useTranslation();
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -67,7 +81,7 @@ export function PokemonData({ pokemon, lang, typesMap, className, backHref }: Po
                     >
                         <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                    <span>Retour</span>
+                    <span>{t.common.back}</span>
                 </Link>
             </div>
 
@@ -124,27 +138,27 @@ export function PokemonData({ pokemon, lang, typesMap, className, backHref }: Po
 
                     <motion.div variants={itemVariants} className="mt-6 grid grid-cols-3 gap-3 sm:gap-4">
                         <div className="rounded-2xl border border-border/30 bg-background/50 p-4 text-center">
-                            <div className="text-xs text-muted-foreground">Taille</div>
+                            <div className="text-xs text-muted-foreground">{t.pokemon.height}</div>
                             <div className="mt-1 text-lg font-semibold text-foreground">
                                 {pokemon.height / 10} m
                                 <span className="text-sm text-muted-foreground ml-1">({pokemon.height * 10} cm)</span>
                             </div>
                         </div>
                         <div className="rounded-2xl border border-border/30 bg-background/50 p-4 text-center">
-                            <div className="text-xs text-muted-foreground">Poids</div>
+                            <div className="text-xs text-muted-foreground">{t.pokemon.weight}</div>
                             <div className="mt-1 text-lg font-semibold text-foreground">
                                 {pokemon.weight / 10} kg
                                 <span className="text-sm text-muted-foreground ml-1">({pokemon.weight * 100} g)</span>
                             </div>
                         </div>
                         <div className="rounded-2xl border border-border/30 bg-background/50 p-4 text-center">
-                            <div className="text-xs text-muted-foreground">Mouvements</div>
+                            <div className="text-xs text-muted-foreground">{t.pokemon.moves}</div>
                             <div className="mt-1 text-lg font-semibold text-foreground">{pokemon.moves.length}</div>
                         </div>
                     </motion.div>
 
                     <motion.div variants={itemVariants} className="mt-6">
-                        <h2 className="text-sm font-semibold text-foreground/90">Liste des mouvements</h2>
+                        <h2 className="text-sm font-semibold text-foreground/90">{t.pokemon.movesList}</h2>
                         <div className="mt-3 flex flex-wrap gap-2">
                             {visibleMoves.map((m) => (
                                 <MoveBadge key={m} move={m} />
@@ -154,7 +168,7 @@ export function PokemonData({ pokemon, lang, typesMap, className, backHref }: Po
                                     onClick={() => setShowAllMoves(true)}
                                     className="text-xs text-primary font-medium hover:underline self-center ml-2"
                                 >
-                                    +{pokemon.moves.length - 30} autres
+                                    +{pokemon.moves.length - 30} {t.common.andMore}
                                 </button>
                             )}
                             {showAllMoves && pokemon.moves.length > 30 && (
@@ -162,7 +176,7 @@ export function PokemonData({ pokemon, lang, typesMap, className, backHref }: Po
                                     onClick={() => setShowAllMoves(false)}
                                     className="text-xs text-primary font-medium hover:underline self-center ml-2"
                                 >
-                                    Voir moins
+                                    {t.common.viewLess}
                                 </button>
                             )}
                         </div>

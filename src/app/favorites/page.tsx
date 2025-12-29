@@ -3,6 +3,7 @@
 import { useFavorites } from "@/context/FavoritesContext";
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useTranslation } from "@/hooks/useTranslation";
 import { PokemonGrid } from "@/components/Layout/PokemonGrid";
 import { PokemonCard } from "@/components/Layout/PokemonCard";
 import { getPokemonDetails } from "@/lib/pokeapi";
@@ -13,6 +14,7 @@ import type { TypesMap } from "@/lib/api";
 export default function FavoritesPage() {
     const { favorites } = useFavorites();
     const lang = useLanguage();
+    const t = useTranslation();
     const [pokemons, setPokemons] = useState<Pokemon[]>([]);
     const [loading, setLoading] = useState(true);
     const [typesMap, setTypesMap] = useState<TypesMap | null>(null);
@@ -47,7 +49,7 @@ export default function FavoritesPage() {
             <main className="max-w-screen-2xl mx-auto px-4 py-8 text-center min-h-[50vh] flex items-center justify-center">
                 <div className="flex flex-col items-center gap-4">
                     <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-                    <p className="text-muted-foreground animate-pulse">Chargement de votre équipe...</p>
+                    <p className="text-muted-foreground animate-pulse">{t.common.loading}</p>
                 </div>
             </main>
         );
@@ -57,10 +59,10 @@ export default function FavoritesPage() {
         return (
             <main className="max-w-screen-2xl mx-auto px-4 py-16 text-center">
                 <div className="max-w-md mx-auto bg-background/60 p-8 rounded-3xl border border-border/30 shadow-sm">
-                    <h1 className="text-2xl font-bold mb-4">Votre équipe est vide</h1>
-                    <p className="text-muted-foreground mb-6">Ajoutez des Pokémon à vos favoris en cliquant sur le cœur ❤️ sur leur carte.</p>
-                    <a href="/" className="inline-flex items-center justify-center px-5 py-2.5 rounded-2xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors">
-                        Explorer le Pokédex
+                    <h1 className="text-2xl font-bold mb-4">{t.favorites.title}</h1>
+                    <p className="text-muted-foreground mb-6">{t.favorites.empty}</p>
+                    <a href="/others" className="inline-flex items-center justify-center px-5 py-2.5 rounded-2xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors">
+                        {t.nav.others}
                     </a>
                 </div>
             </main>
@@ -71,10 +73,10 @@ export default function FavoritesPage() {
         <main className="max-w-screen-2xl mx-auto px-4 py-8">
             <header className="mb-8">
                 <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-rose-600">
-                    Mon Équipe ({favorites.length})
+                    {t.favorites.title} ({favorites.length})
                 </h1>
                 <p className="text-muted-foreground mt-2">
-                    Retrouvez ici tous vos Pokémon favoris sauvegardés.
+                    {t.favorites.subtitle}
                 </p>
             </header>
 

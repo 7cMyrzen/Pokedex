@@ -8,22 +8,39 @@ import Link from "next/link";
 import { MoveRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useTranslation } from "@/hooks/useTranslation";
 
+/**
+ * Props for the EvolutionChain component.
+ */
 interface EvolutionChainProps {
+    /** URL to the evolution chain API endpoint */
     url: string;
 }
 
+/**
+ * Internal interface representing a node in the evolution chain (from PokéAPI).
+ */
 interface ChainLink {
     species: { name: string; url: string };
     evolves_to: ChainLink[];
 }
 
+/**
+ * Interface representing the structure of the evolution chain response.
+ */
 interface EvolutionData {
     chain: ChainLink;
 }
 
+/**
+ * Fetches and displays the evolutionary line of a Pokemon.
+ * Traverses the evolution tree and renders a linear or slightly branched progression.
+ * Includes interactive links to evolution stages.
+ */
 export function EvolutionChain({ url }: EvolutionChainProps) {
     const language = useLanguage();
+    const t = useTranslation();
     const [chainPokemons, setChainPokemons] = useState<Pokemon[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -72,12 +89,12 @@ export function EvolutionChain({ url }: EvolutionChainProps) {
         fetchChain();
     }, [url]);
 
-    if (loading) return <div className="h-24 flex items-center justify-center text-muted-foreground animate-pulse">Chargement des évolutions...</div>;
+    if (loading) return <div className="h-24 flex items-center justify-center text-muted-foreground animate-pulse">{t.pokemon.loadingEvolution}</div>;
     if (chainPokemons.length === 0) return null;
 
     return (
         <div className="mt-8">
-            <h2 className="text-xl font-bold mb-6 text-foreground">Chaîne d'évolution</h2>
+            <h2 className="text-xl font-bold mb-6 text-foreground">{t.pokemon.evolution}</h2>
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8">
                 {chainPokemons.map((p, index) => (
                     <div key={p.id} className="flex items-center">

@@ -3,20 +3,23 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Heart, Scale } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function FeaturesBlock() {
+    const t = useTranslation();
+
     const features = [
         {
-            title: "Mon Équipe",
-            description: "Créez votre équipe de rêve en ajoutant vos Pokémon préférés aux favoris.",
+            title: t.nav.favorites,
+            description: t.home.features.favorites.desc,
             icon: Heart,
             href: "/favorites",
             color: "from-red-500 to-rose-600",
             delay: 0.1
         },
         {
-            title: "Comparateur",
-            description: "Comparez les statistiques de deux Pokémon côte à côte avec un graphique radar.",
+            title: t.nav.comparator,
+            description: t.home.features.comparator.desc,
             icon: Scale,
             href: "/comparator",
             color: "from-blue-500 to-indigo-600",
@@ -27,9 +30,9 @@ export function FeaturesBlock() {
     return (
         <section className="w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold mb-4">Fonctionnalités Avancées</h2>
+                <h2 className="text-3xl font-bold mb-4">{t.home.features.title}</h2>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                    Profitez de nouveaux outils pour analyser et organiser votre collection.
+                    {t.home.features.subtitle}
                 </p>
             </div>
 
@@ -56,7 +59,7 @@ export function FeaturesBlock() {
                             </p>
 
                             <span className="inline-flex items-center text-sm font-semibold text-primary">
-                                Explorer <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
+                                {t.common.explore} <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
                             </span>
                         </motion.div>
                     </Link>

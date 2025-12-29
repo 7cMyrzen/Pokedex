@@ -4,14 +4,25 @@ import { useState, useEffect, useRef } from "react";
 import { getAllPokemonList } from "@/lib/pokeapi";
 import { matchesSearch } from "@/lib/search";
 import { cn } from "@/lib/utils";
-import { useLanguage } from "@/hooks/useLanguage";
+import { useTranslation } from "@/hooks/useTranslation";
 
+/**
+ * Props for the PokemonSelector component.
+ */
 interface PokemonSelectorProps {
+    /** Callback function fired when a Pokemon is selected */
     onSelect: (id: number) => void;
+    /** Optional label displayed above the input */
     label?: string;
+    /** Optional additional CSS classes */
     className?: string;
 }
 
+/**
+ * Autocomplete input component for selecting a Pokemon.
+ * Allows searching by name (localized) or ID.
+ * Fetches a lightweight list of all Pokemon for client-side filtering.
+ */
 export function PokemonSelector({ onSelect, label, className }: PokemonSelectorProps) {
     const [searchTerm, setSearchTerm] = useState("");
     const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +30,7 @@ export function PokemonSelector({ onSelect, label, className }: PokemonSelectorP
     const [filtered, setFiltered] = useState<{ name: string; url: string; id: number }[]>([]);
     const [loading, setLoading] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
+    const t = useTranslation();
 
     // Fetch all pokemon names on mount
     useEffect(() => {
@@ -64,7 +76,7 @@ export function PokemonSelector({ onSelect, label, className }: PokemonSelectorP
             {label && <label className="block text-sm font-medium mb-2 text-foreground/80">{label}</label>}
             <input
                 type="text"
-                placeholder="Chercher un Pokémon..."
+                placeholder={t.comparator.placeholder}
                 value={searchTerm}
                 onFocus={() => setIsOpen(true)}
                 onChange={(e) => {
@@ -77,9 +89,9 @@ export function PokemonSelector({ onSelect, label, className }: PokemonSelectorP
             {isOpen && searchTerm && (
                 <div className="absolute z-50 mt-2 w-full max-h-60 overflow-y-auto rounded-xl border border-border/30 bg-background/95 backdrop-blur-md shadow-xl p-1">
                     {loading ? (
-                        <div className="p-3 text-center text-xs text-muted-foreground">Chargement...</div>
+                        <div className="p-3 text-center text-xs text-muted-foreground">{t.common.loading}</div>
                     ) : filtered.length === 0 ? (
-                        <div className="p-3 text-center text-xs text-muted-foreground">Aucun résultat</div>
+                        <div className="p-3 text-center text-xs text-muted-foreground">{t.search.noResults}</div>
                     ) : (
                         <ul>
                             {filtered.map((p) => (

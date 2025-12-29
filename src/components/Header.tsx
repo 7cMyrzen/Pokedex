@@ -11,6 +11,8 @@ import {
     MobileNavMenu,
 } from "@/components/ui/resizable-navbar";
 import { useEffect, useState } from "react";
+import { useLanguage } from "@/hooks/useLanguage";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const LANG_STORAGE_KEY = "pokedex_lang";
 
@@ -41,48 +43,54 @@ function LanguageSelect({ value, onChange, className }: { value: string; onChang
     );
 }
 
+/**
+ * Header component managing the application navigation.
+ * Includes responsive desktop/mobile layouts and language selection.
+ * Synchronizes language state across the application via usage of useLanguage and CustomEvents.
+ */
 export function Header() {
+    const t = useTranslation();
+
     const navItems = [
         {
-            name: "Accueil",
+            name: t.nav.home,
             link: "/",
         },
         {
-            name: "Génération 1",
+            name: t.nav.gen1,
             link: "/gen1",
         },
         {
-            name: "Autres",
+            name: t.nav.others,
             link: "/others",
         },
         {
-            name: "Favoris",
+            name: t.nav.favorites,
             link: "/favorites",
         },
         {
-            name: "Comparateur",
+            name: t.nav.comparator,
             link: "/comparator",
         },
     ];
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [lang, setLang] = useState<string>("fr");
 
-    useEffect(() => {
-        if (typeof window === "undefined") return;
-        const stored = window.localStorage.getItem(LANG_STORAGE_KEY);
-        if (stored) {
-            setLang(stored);
-        } else {
-            window.localStorage.setItem(LANG_STORAGE_KEY, "fr");
-            setLang("fr");
-        }
-    }, []);
+    // Use the hook instead of local state to sync with other components
+    // We need to cast our simple useLanguage hook to support setLanguage event dispatch if not present
+    // But wait, the hook only returns string. We need to dispatch event manually as before.
+
+    // Actually, useLanguage hook returns just "lang". 
+    // We already have handleLangChange that updates storage and dispatches event.
+    // So we just need to initialize "lang" from useLanguage hook? 
+    // No, useLanguage listens to event.
+
+    // Let's rely on useLanguage() for reading, and keep handleLangChange for writing.
+    const currentLang = useLanguage();
 
     const handleLangChange = (value: string) => {
-        setLang(value);
         if (typeof window !== "undefined") {
-            window.localStorage.setItem(LANG_STORAGE_KEY, value);
+            window.localStorage.setItem("pokedex_lang", value);
             window.dispatchEvent(new CustomEvent("pokedex-lang-changed", { detail: value }));
         }
     };
@@ -96,7 +104,7 @@ export function Header() {
                     <NavItems items={navItems} />
                     <div className="relative z-[70] flex items-center gap-3">
                         <NavbarButton variant="gradient" href="https://github.com/7cMyrzen/Pokedex">GitHub</NavbarButton>
-                        <LanguageSelect value={lang} onChange={handleLangChange} />
+                        <LanguageSelect value={currentLang} onChange={handleLangChange} />
                     </div>
                 </NavBody>
 
@@ -125,7 +133,7 @@ export function Header() {
                             </a>
                         ))}
                         <LanguageSelect
-                            value={lang}
+                            value={currentLang}
                             onChange={handleLangChange}
                             className="mt-4"
                         />

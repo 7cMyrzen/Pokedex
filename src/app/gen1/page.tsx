@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useGen1Pokemon, GEN1_STATE_KEY } from "@/hooks/useGen1Pokemon";
 import { PokemonGrid } from "@/components/Layout/PokemonGrid";
 import { PokemonCard } from "@/components/Layout/PokemonCard";
@@ -10,6 +11,7 @@ import { Modal } from "@/components/Layout/Modal";
 
 export default function Pokedex() {
     const lang = useLanguage();
+    const t = useTranslation();
     const {
         loading,
         error,
@@ -28,13 +30,13 @@ export default function Pokedex() {
         <main className="max-w-screen-2xl mx-auto px-2 sm:px-4 lg:px-6 py-12">
             {/* Search Input */}
             <div className="mb-6 flex items-center">
-                <label htmlFor="gen1-search" className="sr-only">Rechercher</label>
+                <label htmlFor="gen1-search" className="sr-only">{t.common.search}</label>
                 <input
                     id="gen1-search"
                     type="search"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Rechercher par nom, type ou ID..."
+                    placeholder={t.search.placeholderGen1}
                     className="w-full rounded-2xl border border-border/30 bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 shadow-sm"
                 />
             </div>
@@ -48,10 +50,10 @@ export default function Pokedex() {
                             onClick={() => setTypesOpen(true)}
                             className="inline-flex items-center gap-2 rounded-2xl border border-border/30 bg-background/60 px-4 py-2 text-sm text-foreground shadow-sm hover:bg-background/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                         >
-                            Filtrer par types {activeTypes.length > 0 && `(${activeTypes.length})`}
+                            {t.common.filterByTypes} {activeTypes.length > 0 && `(${activeTypes.length})`}
                             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
                         </button>
-                        <Modal open={typesOpen} onClose={() => setTypesOpen(false)} title="Filtrer par types" contentClassName="max-h-[85vh] sm:max-h-[75vh]">
+                        <Modal open={typesOpen} onClose={() => setTypesOpen(false)} title={t.common.filterByTypes} contentClassName="max-h-[85vh] sm:max-h-[75vh]">
                             <div className="p-1">
                                 {Object.keys(typesMap ?? {}).map((t) => {
                                     const label = typesMap?.[t]?.translations?.[lang ?? ""] || typesMap?.[t]?.translations?.["en"] || t;
@@ -85,7 +87,7 @@ export default function Pokedex() {
                         disabled={activeTypes.length === 0}
                         className="inline-flex items-center gap-2 rounded-2xl border border-border/30 bg-background/60 px-4 py-2 text-sm text-foreground shadow-sm hover:bg-background/70 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                     >
-                        Supprimer les filtres
+                        {t.common.clearFilters}
                     </button>
                 </div>
             )}

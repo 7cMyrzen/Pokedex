@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslation } from "@/hooks/useTranslation";
 
 function HomeHero() {
     const sectionRef = useRef<HTMLElement | null>(null);
     const textRef = useRef<HTMLDivElement | null>(null);
     const visualRef = useRef<HTMLDivElement | null>(null);
+    const t = useTranslation();
 
     useEffect(() => {
         if (typeof window === "undefined") return;
@@ -61,18 +63,17 @@ function HomeHero() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                     <div ref={textRef} className="relative z-10 space-y-8">
                         <div className="inline-flex items-center rounded-full border border-border/40 px-4 py-2 text-sm font-medium text-foreground shadow-sm cta">
-                            Pokédex – Découvrez, comparez et explorez les Pokémon
+                            {t.home.hero.cta}
                         </div>
 
                         <h1 className="font-epoch text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
                             <span className="block mb-2 text-transparent bg-clip-text bg-gradient-to-r from-foreground via-primary to-foreground animate-gradient">
-                                Attrapez-les tous avec votre Pokédex
+                                {t.home.hero.title}
                             </span>
                         </h1>
 
-                        <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl leading-relaxed">
-                            Parcourez la liste complète des Pokémon, filtrez par type et accédez aux fiches détaillées.
-                            <span className="block mt-2">Un guide rapide et moderne pour les dresseurs.</span>
+                        <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl leading-relaxed whitespace-pre-line">
+                            {t.home.hero.description}
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -80,14 +81,14 @@ function HomeHero() {
                                 href="/gen1"
                                 className="bg-accent-gradient px-8 py-6 text-base font-semibold rounded-lg text-white transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/20 flex items-center justify-center"
                             >
-                                Première génération
+                                {t.home.features.gen1.title}
                                 <svg className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                 </svg>
                             </Link>
                             <Button asChild variant="outline" size="lg" className="group relative overflow-hidden border-2 px-8 py-6 text-base font-semibold transition-all duration-300 hover:bg-transparent hover:text-primary">
                                 <Link href="/others" className="relative z-10 flex items-center">
-                                    <span>Autres générations</span>
+                                    <span>{t.home.features.others.title}</span>
                                     <svg className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                     </svg>
@@ -96,9 +97,9 @@ function HomeHero() {
                         </div>
 
                         <div className="pt-8 stack">
-                            <p className="text-sm text-muted-foreground mb-3">FONCTIONNALITÉS</p>
+                            <p className="text-sm text-muted-foreground mb-3">{t.home.hero.featuresTitle}</p>
                             <div className="flex flex-wrap items-center gap-4">
-                                {["Liste complète", "Recherche", "Filtres par type", "Détails", "Performant"].map((feat) => (
+                                {t.home.hero.tags.map((feat) => (
                                     <span key={feat} className="inline-flex items-center rounded-full px-4 py-2 text-sm font-medium text-foreground/90 border border-border/30 shadow-sm hover:bg-background/50 transition-colors duration-200">
                                         {feat}
                                     </span>
@@ -125,7 +126,7 @@ function HomeHero() {
                                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                                             <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                                         </span>
-                                        Données à jour
+                                        {t.home.hero.updatedData}
                                     </div>
                                 </div>
                             </div>

@@ -9,6 +9,11 @@ const LANGUAGES = ['en', 'fr', 'de', 'es', 'it', 'ja'] as const;
 // Cache map: ID -> Set of names (normalized lower case)
 let searchCache: Map<number, Set<string>> | null = null;
 
+/**
+ * Initializes the name cache by iterating through all supported languages
+ * in the 'pokemon' package and mapping names to Pokedex IDs.
+ * This is performed lazily on the first search request.
+ */
 function initializeCache() {
     if (searchCache) return;
     searchCache = new Map();
@@ -17,16 +22,7 @@ function initializeCache() {
         try {
             const allNames = pokemon.all(lang);
             allNames.forEach((name, index) => {
-                const id = index + 1; // pokemon package indices are 0-based for ID 1..N ? No, wait.
-                // pokemon.getId('Bulbasaur') -> 1.
-                // pokemon.all('en')[0] -> 'Bulbasaur'. 
-                // So index 0 is ID 1.
-
-                // Caveat: 'pokemon' package might not be up to date with Gen 9.
-                // But it's good for Gen 1-7/8.
-                // We'll trust index+1 mapping for now as it's standard.
-                // Exception: Special forms might break this linear mapping if present, but 'pokemon' package is usually just species.
-
+                const id = index + 1;
                 if (!searchCache!.has(id)) {
                     searchCache!.set(id, new Set());
                 }
