@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { motion } from "framer-motion";
 import type { TypesMap } from "@/lib/api";
+import { FavoriteButton } from "../Favorites/FavoriteButton";
 
 interface PokemonCardProps {
     id: number;
@@ -69,6 +70,9 @@ export function PokemonCard({ id, name, image, types, typesMap, lang, href, onCl
                         loading="lazy"
                     />
                 </motion.div>
+                <div className="absolute top-2 right-2">
+                    <FavoriteButton id={id} />
+                </div>
             </div>
             <div className="p-4 sm:p-5">
                 <div className="text-base sm:text-lg font-semibold text-foreground truncate">{name}</div>

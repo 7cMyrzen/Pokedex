@@ -127,7 +127,7 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
     const shadow = visible
         ? '0 0 24px rgba(34, 42, 53, 0.1), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.08)'
         : 'none';
-    const width = getAnimatedValue('100%', '40%');
+    const width = getAnimatedValue('100%', '60%');
     const y = getAnimatedValue(0, 20);
     const borderRadius = getAnimatedValue('0.5rem', '9999px');
 

@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Pokemon, TypesMap } from "@/lib/api";
+import { FavoriteButton } from "../Favorites/FavoriteButton";
+import { EvolutionChain } from "../Details/EvolutionChain";
 
 interface PokemonDataProps {
     pokemon: Pokemon;
@@ -82,6 +84,9 @@ export function PokemonData({ pokemon, lang, typesMap, className, backHref }: Po
                                 priority
                             />
                         </motion.div>
+                        <div className="absolute top-4 right-4 z-10">
+                            <FavoriteButton id={pokemon.id} className="w-10 h-10 p-2.5" />
+                        </div>
                     </div>
                 </div>
 
@@ -146,6 +151,12 @@ export function PokemonData({ pokemon, lang, typesMap, className, backHref }: Po
                             ))}
                         </div>
                     </motion.div>
+
+                    {pokemon.evolutionChainUrl && (
+                        <motion.div variants={itemVariants}>
+                            <EvolutionChain url={pokemon.evolutionChainUrl} />
+                        </motion.div>
+                    )}
                 </motion.div>
             </div>
         </section>

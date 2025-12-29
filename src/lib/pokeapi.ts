@@ -38,6 +38,12 @@ export interface PokeApiPokemon {
             url: string;
         };
     }[];
+    stats: {
+        base_stat: number;
+        stat: {
+            name: string;
+        };
+    }[];
 }
 
 export interface PokeApiSpecies {
@@ -45,6 +51,9 @@ export interface PokeApiSpecies {
         language: { name: string };
         name: string;
     }[];
+    evolution_chain: {
+        url: string;
+    };
 }
 
 async function fetchJson<T>(url: string): Promise<T> {
@@ -74,11 +83,13 @@ export async function getPokemonDetails(urlOrId: string | number): Promise<Pokem
 
     // Fetch species for names
     let names: LocalizedNames = {};
+    let evolutionChainUrl: string | undefined = undefined;
     try {
         const species = await fetchJson<PokeApiSpecies>(`${BASE_URL}/pokemon-species/${data.id}`);
         species.names.forEach((n) => {
             names[n.language.name] = n.name;
         });
+        evolutionChainUrl = species.evolution_chain?.url;
     } catch {
         names = { en: data.name };
     }
@@ -97,6 +108,15 @@ export async function getPokemonDetails(urlOrId: string | number): Promise<Pokem
         types: data.types.map((t) => t.type.name),
         moves: data.moves.map((m) => m.move.name),
         names: names,
+        stats: {
+            hp: data.stats.find(s => s.stat.name === 'hp')?.base_stat || 0,
+            attack: data.stats.find(s => s.stat.name === 'attack')?.base_stat || 0,
+            defense: data.stats.find(s => s.stat.name === 'defense')?.base_stat || 0,
+            specialAttack: data.stats.find(s => s.stat.name === 'special-attack')?.base_stat || 0,
+            specialDefense: data.stats.find(s => s.stat.name === 'special-defense')?.base_stat || 0,
+            speed: data.stats.find(s => s.stat.name === 'speed')?.base_stat || 0,
+        },
+        evolutionChainUrl: evolutionChainUrl
     };
 }
 

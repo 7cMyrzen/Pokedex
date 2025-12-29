@@ -9,6 +9,7 @@ import SmoothScrollWrapper from "@/components/SmoothScrollWrapper";
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import { GsapProvider } from "@/components/GsapProvider";
+import { FavoritesProvider } from "@/context/FavoritesContext";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"], });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], });
@@ -47,16 +48,18 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
         </header>
 
         <GsapProvider>
-          <SmoothScrollWrapper>
-            <main className="w-full flex justify-center pt-24">
-              {children}
-              <Analytics />
-            </main>
+          <FavoritesProvider>
+            <SmoothScrollWrapper>
+              <main className="w-full flex justify-center pt-24">
+                {children}
+                <Analytics />
+              </main>
 
-            <footer className="mt-40">
-              <Footer />
-            </footer>
-          </SmoothScrollWrapper>
+              <footer className="mt-40">
+                <Footer />
+              </footer>
+            </SmoothScrollWrapper>
+          </FavoritesProvider>
         </GsapProvider>
 
       </body>

@@ -55,6 +55,14 @@ export function Header() {
             name: "Autres",
             link: "/others",
         },
+        {
+            name: "Favoris",
+            link: "/favorites",
+        },
+        {
+            name: "Comparateur",
+            link: "/comparator",
+        },
     ];
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

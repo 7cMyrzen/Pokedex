@@ -15,6 +15,15 @@ export interface Pokemon {
     types: string[];
     moves: string[];
     names: LocalizedNames;
+    stats: {
+        hp: number;
+        attack: number;
+        defense: number;
+        specialAttack: number;
+        specialDefense: number;
+        speed: number;
+    };
+    evolutionChainUrl?: string;
 }
 
 export interface TypeInfo {
