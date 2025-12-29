@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import type { Pokemon, TypesMap } from "@/lib/api";
 
 interface PokemonDataProps {
@@ -15,6 +16,19 @@ interface PokemonDataProps {
 
 export function PokemonData({ pokemon, lang, typesMap, className, backHref }: PokemonDataProps) {
     const displayName = pokemon.names?.[lang] || pokemon.names?.["en"] || String(pokemon.id);
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 }
+    };
 
     return (
         <section
@@ -54,7 +68,11 @@ export function PokemonData({ pokemon, lang, typesMap, className, backHref }: Po
                 <div className="relative">
                     <div className="relative aspect-square w-full rounded-2xl overflow-hidden">
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(0,0%,100%,0.05),transparent_40%),radial-gradient(circle_at_70%_80%,hsl(0,0%,0%,0.06),transparent_40%)]" />
-                        <div className="flex h-full w-full items-center justify-center p-6">
+                        <motion.div
+                            className="flex h-full w-full items-center justify-center p-6"
+                            layoutId={`pokemon-image-${pokemon.id}`}
+                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        >
                             <Image
                                 src={pokemon.image}
                                 alt={displayName}
@@ -63,32 +81,38 @@ export function PokemonData({ pokemon, lang, typesMap, className, backHref }: Po
                                 className="object-contain w-4/5 h-4/5 sm:w-5/6 sm:h-5/6 drop-shadow-sm"
                                 priority
                             />
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
 
-                <div>
-                    <div className="flex items-baseline justify-between gap-4">
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    <motion.div variants={itemVariants} className="flex items-baseline justify-between gap-4">
                         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground truncate">{displayName}</h1>
                         <span className="text-muted-foreground">#{pokemon.id}</span>
-                    </div>
+                    </motion.div>
 
-                    <div className="mt-4 flex flex-wrap gap-2">
+                    <motion.div variants={itemVariants} className="mt-4 flex flex-wrap gap-2">
                         {pokemon.types.map((t) => (
-                            <span
+                            <motion.span
                                 key={t}
                                 className={cn(
                                     "inline-flex items-center rounded-full px-3 py-1 text-xs sm:text-sm font-medium",
-                                    "border border-border/30 text-foreground/90 bg-background/50"
+                                    "border border-border/30 text-foreground/90 bg-background/50 cursor-default"
                                 )}
                                 style={typesMap?.[t]?.backgroundColor ? { backgroundColor: typesMap[t].backgroundColor } : undefined}
+                                whileHover={{ scale: 1.1, filter: "brightness(1.1)" }}
+                                whileTap={{ scale: 0.95 }}
                             >
                                 {t}
-                            </span>
+                            </motion.span>
                         ))}
-                    </div>
+                    </motion.div>
 
-                    <div className="mt-6 grid grid-cols-3 gap-3 sm:gap-4">
+                    <motion.div variants={itemVariants} className="mt-6 grid grid-cols-3 gap-3 sm:gap-4">
                         <div className="rounded-2xl border border-border/30 bg-background/50 p-4 text-center">
                             <div className="text-xs text-muted-foreground">Taille</div>
                             <div className="mt-1 text-lg font-semibold text-foreground">
@@ -107,9 +131,9 @@ export function PokemonData({ pokemon, lang, typesMap, className, backHref }: Po
                             <div className="text-xs text-muted-foreground">Mouvements</div>
                             <div className="mt-1 text-lg font-semibold text-foreground">{pokemon.moves.length}</div>
                         </div>
-                    </div>
+                    </motion.div>
 
-                    <div className="mt-6">
+                    <motion.div variants={itemVariants} className="mt-6">
                         <h2 className="text-sm font-semibold text-foreground/90">Liste des mouvements</h2>
                         <div className="mt-3 flex flex-wrap gap-2">
                             {pokemon.moves.map((m) => (
@@ -121,8 +145,8 @@ export function PokemonData({ pokemon, lang, typesMap, className, backHref }: Po
                                 </span>
                             ))}
                         </div>
-                    </div>
-                </div>
+                    </motion.div>
+                </motion.div>
             </div>
         </section>
     );

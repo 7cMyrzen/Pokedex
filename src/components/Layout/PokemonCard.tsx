@@ -5,9 +5,11 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { motion } from "framer-motion";
 import type { TypesMap } from "@/lib/api";
 
 interface PokemonCardProps {
+    id: number;
     name: string;
     image: string;
     types: string[];
@@ -18,7 +20,7 @@ interface PokemonCardProps {
     className?: string;
 }
 
-export function PokemonCard({ name, image, types, typesMap, lang, href, onClick, className }: PokemonCardProps) {
+export function PokemonCard({ id, name, image, types, typesMap, lang, href, onClick, className }: PokemonCardProps) {
     const [isVisible, setIsVisible] = useState(false);
     const cardRef = useRef<HTMLDivElement | null>(null);
 
@@ -53,7 +55,11 @@ export function PokemonCard({ name, image, types, typesMap, lang, href, onClick,
         <>
             <div className="relative aspect-square w-full">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(0,0%,100%,0.05),transparent_40%),radial-gradient(circle_at_70%_80%,hsl(0,0%,0%,0.06),transparent_40%)]" />
-                <div className="flex h-full w-full items-center justify-center p-4 sm:p-6">
+                <motion.div
+                    className="flex h-full w-full items-center justify-center p-4 sm:p-6"
+                    layoutId={`pokemon-image-${id}`}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
                     <Image
                         src={image}
                         alt={name}
@@ -62,7 +68,7 @@ export function PokemonCard({ name, image, types, typesMap, lang, href, onClick,
                         className="object-contain w-4/5 h-4/5 sm:w-5/6 sm:h-5/6 drop-shadow-sm transition-transform duration-300 group-hover:scale-105"
                         loading="lazy"
                     />
-                </div>
+                </motion.div>
             </div>
             <div className="p-4 sm:p-5">
                 <div className="text-base sm:text-lg font-semibold text-foreground truncate">{name}</div>
@@ -70,16 +76,18 @@ export function PokemonCard({ name, image, types, typesMap, lang, href, onClick,
                     {types.map((t) => {
                         const label = typesMap?.[t]?.translations?.[lang ?? ""] || typesMap?.[t]?.translations?.["en"] || t;
                         return (
-                            <span
+                            <motion.span
                                 key={t}
                                 className={cn(
                                     "inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] sm:px-3 sm:py-1 sm:text-xs font-medium",
-                                    "border border-border/30 text-foreground/90 bg-background/50"
+                                    "border border-border/30 text-foreground/90 bg-background/50 cursor-default"
                                 )}
                                 style={typesMap?.[t]?.backgroundColor ? { backgroundColor: typesMap[t].backgroundColor } : undefined}
+                                whileHover={{ scale: 1.1, filter: "brightness(1.1)" }}
+                                whileTap={{ scale: 0.95 }}
                             >
                                 {label}
-                            </span>
+                            </motion.span>
                         );
                     })}
                 </div>

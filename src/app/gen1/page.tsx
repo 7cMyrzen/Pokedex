@@ -121,6 +121,7 @@ export default function Pokedex() {
                     {filteredPokemons.map((p) => (
                         <PokemonCard
                             key={p.id}
+                            id={p.id}
                             name={p.names?.[lang] || p.names?.["en"] || String(p.id)}
                             image={p.image}
                             types={p.types}

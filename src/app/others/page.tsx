@@ -144,6 +144,7 @@ export default function OthersPage() {
                         {displayedPokemons.map((p) => (
                             <PokemonCard
                                 key={p.id}
+                                id={p.id}
                                 name={p.names?.[lang] || p.names?.["en"] || p.names?.["en"] || String(p.id)}
                                 image={p.image}
                                 types={p.types}
