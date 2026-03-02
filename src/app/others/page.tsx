@@ -9,12 +9,20 @@ import { EmptyResults } from "@/components/Layout/EmptyResults";
 import { Modal } from "@/components/Layout/Modal";
 import { Pagination } from "@/components/ui/pagination"; // Need to port this one too?
 import { useSearchParams } from "next/navigation";
-import { useState, useRef } from "react";
+import { useState, useRef, Suspense } from "react";
 import { Container, Box, TextField, Button, Checkbox, Typography, Chip, Alert } from "@mui/material";
 import FilterListIcon from '@mui/icons-material/FilterList';
 import CloseIcon from '@mui/icons-material/Close';
 
 export default function OthersPage() {
+    return (
+        <Suspense fallback={<Container maxWidth="xl" sx={{ py: 6 }}><Typography>Loading...</Typography></Container>}>
+            <OthersPageContent />
+        </Suspense>
+    );
+}
+
+function OthersPageContent() {
     const lang = useLanguage();
     const t = useTranslation();
     const searchParams = useSearchParams();
